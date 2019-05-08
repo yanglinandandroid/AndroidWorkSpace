@@ -16,7 +16,10 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/home_banner"
                 android:layout_width="match_parent"
-                android:layout_height="180dp" />
+                android:layout_height="180dp"
+                app:indicator_margin="5dp"
+                app:indicator_width="5dp"
+                app:indicator_height="5dp"/>
         </LinearLayout>
     </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

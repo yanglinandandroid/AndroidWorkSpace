@@ -2,6 +2,7 @@ package com.example.demo.myapplication.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,11 +10,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.demo.myapplication.R;
+import com.example.demo.myapplication.activity.DetailActivity;
 import com.example.demo.myapplication.base.BaseFragment;
+import com.example.demo.myapplication.bean.News;
 import com.example.demo.myapplication.common.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -24,7 +28,7 @@ import butterknife.Unbinder;
 
 import static java.lang.Thread.sleep;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, OnBannerListener {
 
     @BindView(R.id.srl)
     SwipeRefreshLayout srl;
@@ -71,9 +75,9 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
-        String[] images={"http://5b0988e595225.cdn.sohucs.com/images/20190508/e769514b4c2b49a5b90d87402e4e06f0.jpeg",
+        String[] images = {"http://5b0988e595225.cdn.sohucs.com/images/20190508/e769514b4c2b49a5b90d87402e4e06f0.jpeg",
                 "http://5b0988e595225.cdn.sohucs.com/images/20190508/cb9d9ad486004b51a5c7c7a5355bd107.jpeg",
-        "http://5b0988e595225.cdn.sohucs.com/images/20190508/11c9fb2608924f61b7c17a7c6dd7bf40.png"};
+                "http://5b0988e595225.cdn.sohucs.com/images/20190508/11c9fb2608924f61b7c17a7c6dd7bf40.png"};
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
@@ -82,7 +86,7 @@ public class HomeFragment extends BaseFragment {
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.DepthPage);
         //设置标题集合（当banner样式有显示title时）
-        String[] titles={"币安遭黑客攻击被盗7000比特币","台军士兵酒后街上斗殴","柬埔寨一中国人被枪杀身亡"};
+        String[] titles = {"币安遭黑客攻击被盗7000比特币", "台军士兵酒后街上斗殴", "柬埔寨一中国人被枪杀身亡"};
         banner.setBannerTitles(Arrays.asList(titles));
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
@@ -92,8 +96,10 @@ public class HomeFragment extends BaseFragment {
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
+        banner.setOnBannerListener(this);
 
     }
+
     private void initData() {
 
     }
@@ -115,5 +121,34 @@ public class HomeFragment extends BaseFragment {
         super.onStop();
         //结束轮播
         banner.stopAutoPlay();
+    }
+
+    @Override
+    public void onClick(View v) {
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        String path ="";
+            Intent intent=new Intent(getActivity(), DetailActivity.class);
+        News news=new News();
+        if (position == 0) {
+             path = "http://www.sohu.com/a/312570105_313745";
+            news.setTitle("币安遭黑客攻击被盗7000比特币");
+            news.setPath(path);
+           // Bundle bundle=new Bundle();
+           // bundle.putBundle();
+        }else if(position==1){
+            path="http://www.sohu.com/a/312561947_115479";
+            news.setTitle("台军士兵酒后街上斗殴");
+            news.setPath(path);
+        }else if(position==2){
+            path="http://www.sohu.com/a/312599381_11498";
+            news.setTitle("柬埔寨一中国人被枪杀身亡");
+            news.setPath(path);
+        }
+            intent.putExtra("News",news);
+            getActivity().startActivity(intent);
+
     }
 }
