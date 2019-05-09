@@ -2,6 +2,9 @@ package com.example.demo.myapplication.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
@@ -36,13 +40,18 @@ public class MainActivity extends BaseActivity {
     Button btnMe;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.drawer)
+    DrawerLayout drawer;
+    @BindView(R.id.ly_content)
+    FrameLayout lyContent;
+    @BindView(R.id.drawer_rv)
+    RecyclerView drawerRv;
     private FragmentTransaction transaction;
     private HomeFragment home;
     private FenLeiFragment fenlei;
     private ShopCartFragment shopCart;
     private MeFragment me;
     private FragmentTransaction transaction1;
-
 
 
     @Override
@@ -137,5 +146,13 @@ public class MainActivity extends BaseActivity {
             }
         }
         return false;
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
