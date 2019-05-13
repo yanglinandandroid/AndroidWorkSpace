@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -16,14 +17,16 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     public Context context;
     private int layoutRes;
     private List<T> items;
+    private OnItemClickListener mOnItemClickListener;
+    private OnLongItemClickListener mOnLongItemClickListener;
 
-    public BaseRecyclerAdapter(Context context,@LayoutRes int layoutRes){
+    public BaseRecyclerAdapter(Context context, @LayoutRes int layoutRes) {
         this.context = context;
         this.layoutRes = layoutRes;
         items = new ArrayList<T>();
     }
 
-    public BaseRecyclerAdapter(Context context,@LayoutRes int layoutResId, @Nullable List<T> data) {
+    public BaseRecyclerAdapter(Context context, @LayoutRes int layoutResId, @Nullable List<T> data) {
         this.context = context;
         this.items = data == null ? new ArrayList<T>() : data;
         if (layoutResId != 0) {
@@ -33,12 +36,12 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     @Override
     public BaseRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BaseRecyclerHolder(LayoutInflater.from(context).inflate(layoutRes,null));
+        return new BaseRecyclerHolder(LayoutInflater.from(context).inflate(layoutRes, null));
     }
 
     @Override
     public void onBindViewHolder(BaseRecyclerHolder holder, int position) {
-        convert(holder,position);
+        convert(holder, position);
     }
 
     @Override
@@ -57,7 +60,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         notifyItemInserted(position);
         compatibilityDataSizeChanged(1);
     }
-    public void addData( @NonNull T data) {
+
+    public void addData(@NonNull T data) {
         items.add(data);
         notifyItemInserted(items.size());
     }
@@ -78,8 +82,25 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     /**
      * 需要重写的方法
+     *
      * @param holder
      * @param position
      */
     public abstract void convert(BaseRecyclerHolder holder, int position);
+
+    public interface OnItemClickListener {
+        void onItemClickListener(View view, int position);
+    }
+
+    public interface OnLongItemClickListener {
+        void onLongItemClickListener(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setOnLongItemClickListener(OnLongItemClickListener onLongItemClickListener) {
+        mOnLongItemClickListener = onLongItemClickListener;
+    }
 }
